@@ -5,15 +5,108 @@
     
     <Window.Resources>
         
+        <Style TargetType="Button" x:Key="prevNextWeekButton">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#CCFFFF"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#009999"/>
+                                <Setter Property="BorderBrush" Value="DarkGray"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#006666"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#000066"/>
+        </Style>
+        
         <Style TargetType="Label" x:Key="weekDayLabelStyle">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="LightGray" 
+                                BorderThickness="1" 
+                                Background="#AAAAFF"
+                                Margin="0,0,2,0" 
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#000066"/>
         </Style>
 
         <Style TargetType="Label" x:Key="weekLabelStyle">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="LightGray" 
+                                BorderThickness="1" 
+                                Background="#AAAAFF"
+                                Margin="0,0,0,2" 
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#000066"/>
+        </Style>
+
+        <Style TargetType="Border" x:Key="dateBorderStyle">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="3"/>
+            <Setter Property="Margin" Value="2,2,2,2"/>
+        </Style>
+        
+        <Style TargetType="StackPanel" x:Key="dateStackPanelStyle">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="dateLabelStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="Black" 
+                                BorderThickness="1" 
+                                CornerRadius="3,3,0,0">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#000066"/>
+        </Style>
+
+        <Style TargetType="ScrollViewer" x:Key="eventsScrollViewerStyle">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         </Style>
 
     </Window.Resources>
@@ -39,10 +132,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Button Grid.Row="0" Grid.Column="0" Content="Prev"/>
-        <Button Grid.Row="0" Grid.Column="8" Content="Prev"/>
-        <Button Grid.Row="5" Grid.Column="0" Content="Next"/>
-        <Button Grid.Row="5" Grid.Column="8" Content="Next"/>
+        <Button Grid.Row="0" Grid.Column="0" 
+                Content="Prev" 
+                Style="{StaticResource prevNextWeekButton}"
+                Margin="0,0,2,2"/>
+        <Button Grid.Row="0" Grid.Column="8" 
+                Content="Prev" 
+                Style="{StaticResource prevNextWeekButton}"
+                Margin="0,0,0,2"/>
+        <Button Grid.Row="5" Grid.Column="0" 
+                Content="Next" 
+                Style="{StaticResource prevNextWeekButton}"
+                Margin="0,0,2,0"/>
+        <Button Grid.Row="5" Grid.Column="8" 
+                Content="Next" 
+                Style="{StaticResource prevNextWeekButton}"/>
 
         <!-- Top Panel -->
         <Label Grid.Row="0" Grid.Column="1" Content="Monday" Style="{StaticResource weekDayLabelStyle}"/>
@@ -73,6 +177,176 @@
         <Label Grid.Row="2" Grid.Column="8" Content="xD" Style="{StaticResource weekLabelStyle}"/>
         <Label Grid.Row="3" Grid.Column="8" Content="xD" Style="{StaticResource weekLabelStyle}"/>
         <Label Grid.Row="4" Grid.Column="8" Content="xD" Style="{StaticResource weekLabelStyle}"/>
+
+        <!-- Calendar -->
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+            <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+            <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="4" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="5" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="6" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="7" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="5" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="6" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="7" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="4" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="5" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="6" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="7" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="3" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="4" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="5" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="6" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="7" Style="{StaticResource dateBorderStyle}">
+            <StackPanel Style="{StaticResource dateStackPanelStyle}">
+                <Label Content="Date" Style="{StaticResource dateLabelStyle}"/>
+                <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>
