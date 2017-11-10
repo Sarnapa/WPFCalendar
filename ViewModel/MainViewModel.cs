@@ -11,25 +11,59 @@ using WPFCalendar.Model;
 
 namespace WPFCalendar.ViewModel
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
-        private Calendar _calendar;
-        private ObservableCollection<Event> _eventsList;
-        private SerializationService _serializationService;
+        private static readonly int _weekDaysCount = 7;
+        private static readonly int _weeksCount = 4;
+        private List<DayModel> _daysList = new List<DayModel>();
+        private List<String> _weeksList = new List<string>();
+        private ObservableCollection<EventModel> _eventsList = new ObservableCollection<EventModel>();
+        private ICommand _getPrevWeek;
+        private ICommand _getNextWeek;
 
-        public Calendar Calendar
+        public int WeekDaysCount 
         {
             get
             {
-                return _calendar;
-            }
-            set
-            {
-                _calendar = value;
+                return _weekDaysCount;
             }
         }
 
-        public ObservableCollection<Event> EventsList
+        public int WeeksCount 
+        {
+            get
+            {
+                return _weeksCount;
+            }
+        }
+        
+        public List<DayModel> DaysList 
+        {
+            get
+            {
+                return _daysList;
+            }
+            set
+            {
+                _daysList = value;
+                OnPropertyChanged("DaysList");
+            }
+        }
+
+        public List<String> WeeksList
+        {
+            get
+            {
+                return _weeksList;
+            }
+            set
+            {
+                _weeksList = value;
+                OnPropertyChanged("WeeksList");
+            }
+        }
+
+        public ObservableCollection<EventModel> EventsList
         {
             get
             {
@@ -41,23 +75,82 @@ namespace WPFCalendar.ViewModel
             }
         }
 
-        public ICommand GetDate { get; private set;}
+        public ICommand GetPrevWeek
+        {
+            get
+            {
+                return _getPrevWeek;
+            }
+        }
 
+        public ICommand GetNextWeek
+        {
+            get
+            {
+                return _getNextWeek;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         public MainViewModel()
         {
-            Calendar = new Calendar();
-            EventsList = new ObservableCollection<Event>();
-            _serializationService = new SerializationService();
-            EventsList = (ObservableCollection<Event>)_serializationService.ReadSource();
-            
-            GetDate = new RelayCommand(GetDateAction, null);
+            DateTime firstDateOfWeek = CalendarService.GetFirstDateOfWeek(DateTime.Now);
+            DaysList = GetDaysList(firstDateOfWeek);
+            WeeksList = GetWeeksList(firstDateOfWeek);
+            EventsList = (ObservableCollection<EventModel>)SerializationService.ReadSource();
+            _getPrevWeek = new RelayCommand(GetPrevWeekAction, null);
+            _getNextWeek = new RelayCommand(GetNextWeekAction, null);
         }
 
-        private void GetDateAction(object obj)
+        private void OnPropertyChanged(String propertyName)
         {
-            Debug.WriteLine("Dupka");
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
+        private List<DayModel> GetDaysList(DateTime date)
+        {
+            List<DayModel> daysList = new List<DayModel>();
+
+            int calendarCellsCount = _weekDaysCount * _weeksCount;
+            for(int i = 0; i < calendarCellsCount; ++i)
+            {
+                daysList.Add(new DayModel(date.AddDays((double)i)));
+            }
+            return daysList;
+        }
+
+        private List<String> GetWeeksList(DateTime date)
+        {
+            List<String> weeksList = new List<String>();
+
+            int weekNumber = CalendarService.GetWeekOfYear(date);
+            for(int i = 0; i < _weeksCount; ++i)
+            {
+                weeksList.Add(String.Format("W{0}\n{1}", weekNumber, date.Year));
+                date = date.AddDays(7);
+                weekNumber = CalendarService.GetWeekOfYear(date);
+            }
+            return weeksList;
+        }
+
+        private void GetPrevWeekAction(object obj)
+        {
+            DateTime firstDate = DaysList[0].Date.AddDays(-7);
+            DaysList = GetDaysList(firstDate);
+            WeeksList = GetWeeksList(firstDate);
+        }
+
+        private void GetNextWeekAction(object obj)
+        {
+            DateTime firstDate = DaysList[0].Date.AddDays(7);
+            DaysList = GetDaysList(firstDate);
+            WeeksList = GetWeeksList(firstDate);
+        }
 
     }
 }

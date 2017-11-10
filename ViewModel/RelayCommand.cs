@@ -9,9 +9,9 @@ namespace WPFCalendar.ViewModel
 {
     class RelayCommand: ICommand
     {
-        // Przetrzymuje metodą sprawdzającą, czy można wykonać komendę
+        // Przetrzymuje metodę sprawdzającą, czy można wykonać komendę
         private readonly Func<Boolean> _canExecute;
-        // Przetrzymuję metodę, którą wykonuje komenda
+        // Przetrzymuje metodę, którą wykonuje komenda
         private readonly Action<object> _action;
 
         public event EventHandler CanExecuteChanged

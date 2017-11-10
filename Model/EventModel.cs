@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WPFCalendar.Model
 {
-    public class Event: INotifyPropertyChanged
+    public class EventModel: INotifyPropertyChanged
     {
         private DateTime _date;
         private DateTime _start;
@@ -65,10 +65,10 @@ namespace WPFCalendar.Model
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Event()
+        public EventModel()
         { }
         
-        public Event(DateTime date, DateTime start, DateTime end, String title)
+        public EventModel(DateTime date, DateTime start, DateTime end, String title)
         {
             Date = date;
             Start = start;

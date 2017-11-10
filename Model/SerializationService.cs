@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace WPFCalendar.Model
 {
-    public class SerializationService
+    public static class SerializationService
     {
         private static readonly String _sourcePath = "../../EventsDB.xml";
 
-        public IEnumerable<Event> ReadSource()
+        public static IEnumerable<EventModel> ReadSource()
         {
             if(File.Exists(_sourcePath))
             {
@@ -22,14 +22,14 @@ namespace WPFCalendar.Model
                     if(fs.Length > 0)
                     {
                         var bf = new BinaryFormatter();
-                        return (IEnumerable<Event>)bf.Deserialize(fs);
+                        return (IEnumerable<EventModel>)bf.Deserialize(fs);
                     }
                 }
             }
             return null;
         }
 
-        public void WriteToSource(IEnumerable<Event> eventsList)
+        public static void WriteToSource(IEnumerable<EventModel> eventsList)
         {
             if(eventsList != null)
             {

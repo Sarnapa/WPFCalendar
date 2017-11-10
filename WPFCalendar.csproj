@@ -76,8 +76,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Calendar.cs" />
-    <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\CalendarService.cs" />
+    <Compile Include="Model\DayModel.cs" />
+    <Compile Include="Model\EventModel.cs" />
     <Compile Include="Model\SerializationService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
