@@ -6,7 +6,7 @@
         MinHeight="600" MinWidth="800">
     
     <Window.DataContext>
-        <local:MainViewModel/>     
+        <local:MainViewModel x:Name="mainViewModel"/>     
     </Window.DataContext>
     
     <Window.Resources>
@@ -110,10 +110,30 @@
             </Setter>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="#000066"/>
+            <Setter Property="Margin" Value="0,0,0,1"/>
         </Style>
 
         <Style TargetType="ScrollViewer" x:Key="eventsScrollViewerStyle">
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="eventLabelStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="#007777" 
+                                BorderThickness="1" 
+                                CornerRadius="3,3,0,0"
+                                Padding="5,0,0,0">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#009999"/>
+            <Setter Property="Margin" Value="0,0,0,1"/>
         </Style>
 
     </Window.Resources>
@@ -200,12 +220,21 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Style="{StaticResource dateBorderStyle}">
-                        <StackPanel Style="{StaticResource dateStackPanelStyle}">
-                            <Label Content="{Binding DateText}" Style="{StaticResource dateLabelStyle}"/>
-                            <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}"/>
-                        </StackPanel>
-                    </Border>
+                    <ScrollViewer Style="{StaticResource eventsScrollViewerStyle}">
+                        <Border Style="{StaticResource dateBorderStyle}">
+                            <StackPanel Style="{StaticResource dateStackPanelStyle}" Background="{Binding DateColor}" 
+                                        PreviewMouseLeftButtonDown="DoubleClickEventHandler">
+                                <Label Content="{Binding DateText}" Style="{StaticResource dateLabelStyle}"/>
+                                <ItemsControl ItemsSource="{Binding EventsList}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding EventText}" Style="{StaticResource eventLabelStyle}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </ScrollViewer>
                 </DataTemplate> 
             </ItemsControl.ItemTemplate>
         </ItemsControl>

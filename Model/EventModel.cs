@@ -63,6 +63,14 @@ namespace WPFCalendar.Model
             }
         }
 
+        public String EventText
+        {
+            get
+            {
+                return _start.ToString("HH:ss") + "-" + _end.ToString("HH:ss") + " " + _title;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public EventModel()

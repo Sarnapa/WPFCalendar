@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFCalendar.Model;
 
 namespace WPFCalendar.ViewModel
@@ -17,7 +18,6 @@ namespace WPFCalendar.ViewModel
         private static readonly int _weeksCount = 4;
         private List<DayModel> _daysList = new List<DayModel>();
         private List<String> _weeksList = new List<string>();
-        private ObservableCollection<EventModel> _eventsList = new ObservableCollection<EventModel>();
         private ICommand _getPrevWeek;
         private ICommand _getNextWeek;
 
@@ -63,18 +63,6 @@ namespace WPFCalendar.ViewModel
             }
         }
 
-        public ObservableCollection<EventModel> EventsList
-        {
-            get
-            {
-                return _eventsList;
-            }
-            set
-            {
-                _eventsList = value;
-            }
-        }
-
         public ICommand GetPrevWeek
         {
             get
@@ -95,10 +83,9 @@ namespace WPFCalendar.ViewModel
         
         public MainViewModel()
         {
-            DateTime firstDateOfWeek = CalendarService.GetFirstDateOfWeek(DateTime.Now);
+            DateTime firstDateOfWeek = CalendarService.GetFirstDateOfWeek(DateTime.Now.Date);
             DaysList = GetDaysList(firstDateOfWeek);
             WeeksList = GetWeeksList(firstDateOfWeek);
-            EventsList = (ObservableCollection<EventModel>)SerializationService.ReadSource();
             _getPrevWeek = new RelayCommand(GetPrevWeekAction, null);
             _getNextWeek = new RelayCommand(GetNextWeekAction, null);
         }
@@ -115,11 +102,16 @@ namespace WPFCalendar.ViewModel
         private List<DayModel> GetDaysList(DateTime date)
         {
             List<DayModel> daysList = new List<DayModel>();
+            List<EventModel> allEventsList = (List<EventModel>)SerializationService.ReadSource();
 
             int calendarCellsCount = _weekDaysCount * _weeksCount;
-            for(int i = 0; i < calendarCellsCount; ++i)
+            for (int i = 0; i < calendarCellsCount; ++i)
             {
-                daysList.Add(new DayModel(date.AddDays((double)i)));
+                if (date.CompareTo(DateTime.Now.Date) == 0)
+                    daysList.Add(new DayModel(date, new SolidColorBrush(Color.FromRgb(255, 255, 66)), allEventsList));
+                else
+                    daysList.Add(new DayModel(date, new SolidColorBrush(Colors.White), allEventsList));
+                date = date.AddDays(1);
             }
             return daysList;
         }
@@ -138,6 +130,7 @@ namespace WPFCalendar.ViewModel
             return weeksList;
         }
 
+        // Commands Actions
         private void GetPrevWeekAction(object obj)
         {
             DateTime firstDate = DaysList[0].Date.AddDays(-7);
