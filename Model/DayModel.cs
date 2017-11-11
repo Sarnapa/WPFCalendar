@@ -16,7 +16,6 @@ namespace WPFCalendar.Model
         private SolidColorBrush _dateColor;
         private ObservableCollection<EventModel> _eventsList = new ObservableCollection<EventModel>();
 
-
         public DateTime Date
         {
             get

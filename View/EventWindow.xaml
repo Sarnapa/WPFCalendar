@@ -62,13 +62,15 @@
         <Label Grid.Row="1" Content="Pass start time:" Style="{StaticResource headerLabelStyle}"/>
         <Label Grid.Row="2"  Content="Pass end time:" Style="{StaticResource headerLabelStyle}"/>
         
-        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventStart, Mode=OneWay}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventEnd, Mode=OneWay}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventTitle, Mode=OneWay}"/>
         
         <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource buttonsStackPanelStyle}">
-            <Button Content="Remove event" Style="{StaticResource removeEventButtonStyle}"/>
-            <Button Content="Add event" Style="{StaticResource addModifyEventButtonStyle}"/>
+            <Button Name="removeEventButton" Content="Remove event" Style="{StaticResource removeEventButtonStyle}"
+                    Command="{Binding RemoveEventCommand}"/>
+            <Button Name="addModifyEventButton" Content="Add event" Style="{StaticResource addModifyEventButtonStyle}"
+                    Command="{Binding CloseCommand}"/>
         </StackPanel>
             
     </Grid>

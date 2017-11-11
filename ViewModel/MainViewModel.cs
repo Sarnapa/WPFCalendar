@@ -130,6 +130,30 @@ namespace WPFCalendar.ViewModel
             return weeksList;
         }
 
+        public void AddEvent(ref DayModel day, EventModel e)
+        {
+            day.EventsList.Add(e);
+            WriteToSource();
+        }
+
+        public void ModifyEvent(ref DayModel day, EventModel e)
+        {
+        }
+
+        public void RemoveEvent(ref DayModel day, EventModel e)
+        {
+            day.EventsList.Remove(e);
+            WriteToSource();
+        }
+
+        private void WriteToSource()
+        {
+            foreach(DayModel day in _daysList)
+            {
+                SerializationService.WriteToSource(day.EventsList);
+            }
+        }
+
         // Commands Actions
         private void GetPrevWeekAction(object obj)
         {

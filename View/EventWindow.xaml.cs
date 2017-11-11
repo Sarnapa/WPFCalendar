@@ -22,6 +22,19 @@ namespace WPFCalendar.View
         public EventWindow()
         {
             InitializeComponent();
+
+            this.eventViewModel.CloseAction = new Action(() =>
+            {
+                this.DialogResult = true;
+                this.Close();
+            });
+
+            this.eventViewModel.RemoveEventAction = new Action(() =>
+            {
+                this.DialogResult = true;
+                this.eventViewModel.IsRemoveEvent = true;
+                this.Close();
+            });
         }
     }
 }

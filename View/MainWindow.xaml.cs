@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFCalendar.Model;
 using WPFCalendar.ViewModel;
 
 namespace WPFCalendar.View
@@ -34,11 +35,51 @@ namespace WPFCalendar.View
                 MainViewModel mainVM = this.mainViewModel;
                 EventWindow eventWindow = new EventWindow();
                 EventViewModel eventVM = eventWindow.eventViewModel;
-                Boolean? res = eventWindow.ShowDialog();
-                if(res.HasValue && res.Value)
+                DayModel currentDay = (DayModel)((StackPanel)sender).DataContext;
+                if(e.OriginalSource is StackPanel)
                 {
+                    eventWindow.removeEventButton.Visibility = System.Windows.Visibility.Hidden;
+                    eventWindow.addModifyEventButton.Content = "Add event";
+                    Boolean? res = eventWindow.ShowDialog();
+                    if (res.HasValue && res.Value)
+                    {
 
+                    }
                 }
+                else if(e.OriginalSource is TextBlock)
+                {
+                    var eventTextBox = ((TextBlock)e.OriginalSource);
+                    if(eventTextBox.Name == "eventTextBlock")
+                    {
+                        eventWindow.removeEventButton.Visibility = System.Windows.Visibility.Visible;
+                        eventWindow.addModifyEventButton.Content = "Modify event";
+                        var currentEvent = (EventModel)eventTextBox.DataContext;
+                        eventVM.Event = currentEvent;
+                        Boolean? res = eventWindow.ShowDialog();
+                        if (res.HasValue && res.Value)
+                        {
+                            if(eventVM.IsRemoveEvent)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        eventWindow.removeEventButton.Visibility = System.Windows.Visibility.Hidden;
+                        eventWindow.addModifyEventButton.Content = "Add event";
+                        Boolean? res = eventWindow.ShowDialog();
+                        if (res.HasValue && res.Value)
+                        {
+
+                        }
+                    }
+                }
+                
             }
         }
     }
