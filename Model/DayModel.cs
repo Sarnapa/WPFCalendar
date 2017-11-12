@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace WPFCalendar.Model
 {
-    public class DayModel
+    public class DayModel: INotifyPropertyChanged
     {
         private DateTime _date;
         private SolidColorBrush _dateColor;
@@ -49,6 +49,7 @@ namespace WPFCalendar.Model
             set
             {
                 _eventsList = value;
+                OnPropertyChanged("EventsList");
             }
         }
 
@@ -60,12 +61,26 @@ namespace WPFCalendar.Model
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public DayModel(DateTime date, SolidColorBrush color, List<EventModel> allEventsList)
         {
             Date = date;
             DateColor = color;
             EventsList = GetDayEvents(allEventsList);
         }
+
+        public void addEvents(EventModel e)
+        {
+            _eventsList.Add(e);
+            EventsList = new ObservableCollection<EventModel>(_eventsList.OrderBy(o => o.Start));
+        }
+
+        public void removeEvents(EventModel e)
+        {
+            _eventsList.Remove(e);
+        }
+
 
         private ObservableCollection<EventModel> GetDayEvents(List<EventModel> allEventsList)
         {
@@ -81,17 +96,17 @@ namespace WPFCalendar.Model
                     }
                 }
             }
+            eventsList = new ObservableCollection<EventModel>(eventsList.OrderBy(o => o.Start));
             return eventsList;
         }
 
-        public void addEvent(EventModel e)
+        private void OnPropertyChanged(String propertyName)
         {
-            _eventsList.Add(e);
-        }
-
-        public void removeEvent(EventModel e)
-        {
-            _eventsList.Remove(e);
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

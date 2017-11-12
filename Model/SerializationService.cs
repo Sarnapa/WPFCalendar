@@ -11,7 +11,7 @@ namespace WPFCalendar.Model
 {
     public static class SerializationService
     {
-        private static readonly String _sourcePath = "../../EventsDB.xml";
+        private static readonly String _sourcePath = "../../EventsDB";
 
         public static IEnumerable<EventModel> ReadSource()
         {

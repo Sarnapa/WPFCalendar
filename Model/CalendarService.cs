@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,10 @@ namespace WPFCalendar.Model
 
         public static DateTime GetFirstDateOfWeek(DateTime date)
         {
-            return date.AddDays(-((int)DateTime.Now.DayOfWeek - 1));
+            // niedziela
+            if ((int)date.DayOfWeek == 0)
+                return date.AddDays(-6);
+            return date.AddDays(-(int)date.DayOfWeek + 1);
         }
     }
 }

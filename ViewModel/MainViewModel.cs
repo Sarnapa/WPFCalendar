@@ -103,7 +103,6 @@ namespace WPFCalendar.ViewModel
         {
             List<DayModel> daysList = new List<DayModel>();
             List<EventModel> allEventsList = (List<EventModel>)SerializationService.ReadSource();
-
             int calendarCellsCount = _weekDaysCount * _weeksCount;
             for (int i = 0; i < calendarCellsCount; ++i)
             {
@@ -130,28 +129,35 @@ namespace WPFCalendar.ViewModel
             return weeksList;
         }
 
-        public void AddEvent(ref DayModel day, EventModel e)
+        public void AddEvent(DayModel day, EventModel e)
         {
-            day.EventsList.Add(e);
+            day.addEvents(e);
             WriteToSource();
         }
 
-        public void ModifyEvent(ref DayModel day, EventModel e)
+        public void ModifyEvent(DayModel day)
         {
+            day.EventsList = new ObservableCollection<EventModel>(day.EventsList.OrderBy(o => o.Start));
+            WriteToSource();
         }
 
-        public void RemoveEvent(ref DayModel day, EventModel e)
+        public void RemoveEvent(DayModel day, EventModel e)
         {
-            day.EventsList.Remove(e);
+            day.removeEvents(e);
             WriteToSource();
         }
 
         private void WriteToSource()
         {
+            List<EventModel> allEvents = new List<EventModel>();
             foreach(DayModel day in _daysList)
             {
-                SerializationService.WriteToSource(day.EventsList);
+                foreach(EventModel e in day.EventsList)
+                {
+                    allEvents.Add(e);
+                }
             }
+            SerializationService.WriteToSource(allEvents);
         }
 
         // Commands Actions

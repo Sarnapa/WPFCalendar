@@ -43,7 +43,8 @@ namespace WPFCalendar.View
                     Boolean? res = eventWindow.ShowDialog();
                     if (res.HasValue && res.Value)
                     {
-
+                        eventVM.AddNewEvent(currentDay.Date);
+                        mainVM.AddEvent(currentDay, eventVM.Event);
                     }
                 }
                 else if(e.OriginalSource is TextBlock)
@@ -60,11 +61,12 @@ namespace WPFCalendar.View
                         {
                             if(eventVM.IsRemoveEvent)
                             {
-
+                                mainVM.RemoveEvent(currentDay, eventVM.Event);
                             }
                             else
                             {
-
+                                eventVM.ModifyEvent();
+                                mainVM.ModifyEvent(currentDay);
                             }
                         }
                     }
@@ -75,7 +77,8 @@ namespace WPFCalendar.View
                         Boolean? res = eventWindow.ShowDialog();
                         if (res.HasValue && res.Value)
                         {
-
+                            eventVM.AddNewEvent(currentDay.Date);
+                            mainVM.AddEvent(currentDay, eventVM.Event);
                         }
                     }
                 }

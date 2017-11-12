@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace WPFCalendar.Model
 {
+    [Serializable]
     public class EventModel: INotifyPropertyChanged
     {
         private DateTime _date;
@@ -26,6 +27,7 @@ namespace WPFCalendar.Model
                 OnPropertyChanged("Date");
             }
         }
+
         public DateTime Start 
         { 
             get
@@ -36,6 +38,7 @@ namespace WPFCalendar.Model
             {
                 _start = value;
                 OnPropertyChanged("Start");
+                OnPropertyChanged("EventText");
             }
         }
         public DateTime End 
@@ -48,6 +51,7 @@ namespace WPFCalendar.Model
             {
                 _end = value;
                 OnPropertyChanged("End");
+                OnPropertyChanged("EventText");
             }
         }
         public String Title 
@@ -60,6 +64,7 @@ namespace WPFCalendar.Model
             {
                 _title = value;
                 OnPropertyChanged("Title");
+                OnPropertyChanged("EventText");
             }
         }
 
@@ -67,11 +72,11 @@ namespace WPFCalendar.Model
         {
             get
             {
-                return _start.ToString("HH:ss") + "-" + _end.ToString("HH:ss") + " " + _title;
+                return _start.ToString("HH:mm") + "-" + _end.ToString("HH:mm") + " " + _title;
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        [field:NonSerialized]public event PropertyChangedEventHandler PropertyChanged;
 
         public EventModel()
         { }
