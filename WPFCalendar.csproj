@@ -81,6 +81,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ColorScheme.cs" />
+    <Compile Include="FontSizeConverter.cs" />
     <Compile Include="Model\CalendarService.cs" />
     <Compile Include="Model\DayModel.cs" />
     <Compile Include="Model\EventModel.cs" />
