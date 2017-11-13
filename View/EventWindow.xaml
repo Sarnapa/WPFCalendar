@@ -25,6 +25,13 @@
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="AcceptsReturn" Value="False"/>
             <Setter Property="Margin" Value="5,0,5,0"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="StackPanel" x:Key="buttonsStackPanelStyle">
@@ -37,6 +44,20 @@
         <Style TargetType="Button" x:Key="addModifyEventButtonStyle">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="IsEnabled" Value="false" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <Setter Property="IsEnabled" Value="true" />
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=eventTitleTextBox,
+                            Path=(Validation.HasError)}" Value="false" />
+                        <Condition Binding="{Binding ElementName=eventStartTextBox,
+                            Path=(Validation.HasError)}" Value="false" />
+                        <Condition Binding="{Binding ElementName=eventEndTextBox,
+                            Path=(Validation.HasError)}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                </MultiDataTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="Button" x:Key="removeEventButtonStyle">
@@ -44,6 +65,7 @@
             <Setter Property="Margin" Value="0,0,10,0"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
+
     </Window.Resources>
     
     <Grid>
@@ -61,14 +83,21 @@
         <Label Content="Pass event title:" Style="{StaticResource headerLabelStyle}"/>
         <Label Grid.Row="1" Content="Pass start time:" Style="{StaticResource headerLabelStyle}"/>
         <Label Grid.Row="2"  Content="Pass end time:" Style="{StaticResource headerLabelStyle}"/>
-        
-        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventTitle}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventStart}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource eventTextBoxStyle}" Text="{Binding EventEnd}"/>
+
+        <TextBox Grid.Row="0" Grid.Column="1" Name="eventTitleTextBox"
+                 Style="{StaticResource eventTextBoxStyle}"
+                 Text="{Binding EventTitle, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" />
+        <TextBox Grid.Row="1" Grid.Column="1" Name="eventStartTextBox"
+                 Style="{StaticResource eventTextBoxStyle}"
+                 Text="{Binding EventStart, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Name="eventEndTextBox"
+                 Style="{StaticResource eventTextBoxStyle}"
+                 Text="{Binding EventEnd, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"/>
         
         <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource buttonsStackPanelStyle}">
             <Button Name="removeEventButton" Content="Remove event" Style="{StaticResource removeEventButtonStyle}"
-                    Command="{Binding RemoveEventCommand}"/>
+                    Command="{Binding RemoveEventCommand}"
+/>
             <Button Name="addModifyEventButton" Content="Add event" Style="{StaticResource addModifyEventButtonStyle}"
                     Command="{Binding CloseCommand}"/>
         </StackPanel>

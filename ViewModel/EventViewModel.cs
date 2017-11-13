@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using WPFCalendar.Model;
 
 namespace WPFCalendar.ViewModel
 {
-    public class EventViewModel : INotifyPropertyChanged
+    public class EventViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private EventModel _event;
         private Boolean _isRemoveEvent;
@@ -19,6 +20,43 @@ namespace WPFCalendar.ViewModel
         private String _eventTitle;
         private ICommand _removeEventCommand;
         private ICommand _closeCommand;
+
+        public String Error
+        {
+            get { return String.Empty; }
+        }
+
+        public String this[string fieldName]
+        {
+            get
+            {
+                String result = null;
+                DateTime tempDate = new DateTime();
+                String timeFormat = "HH:mm";
+                switch (fieldName)
+                {
+                    case "EventTitle":
+                        if (String.IsNullOrEmpty(EventTitle))
+                            result = "Title field must not be empty!";
+                        else if (EventTitle.Length > 30)
+                            result = "Title must be at most 30 characters in length!";
+                        break;
+                    case "EventStart":
+                        if (String.IsNullOrEmpty(EventStart))
+                            result = "Start time field must not be empty!";
+                        else if (!DateTime.TryParseExact(EventStart, timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out tempDate))
+                            result = "Required format: HH:mm";
+                        break;
+                    case "EventEnd":
+                        if (String.IsNullOrEmpty(EventEnd))
+                            result = "End time field must not be empty!";
+                        else if (!DateTime.TryParseExact(EventEnd, timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out tempDate))
+                            result = "Required format: HH:mm";
+                        break;
+                }
+                return result;
+            }
+        }
 
         public EventModel Event
         {
