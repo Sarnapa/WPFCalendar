@@ -13,7 +13,9 @@ namespace WPFCalendar.Model
     public class DayModel: INotifyPropertyChanged
     {
         private DateTime _date;
-        private SolidColorBrush _dateColor;
+        private String _dateColor;
+        private String _eventColor;
+        private String _mainFontColor;
         private ObservableCollection<EventModel> _eventsList = new ObservableCollection<EventModel>();
 
         public DateTime Date
@@ -28,7 +30,7 @@ namespace WPFCalendar.Model
             }
         }
 
-        public SolidColorBrush DateColor
+        public String DateColor
         {
             get
             {
@@ -37,8 +39,23 @@ namespace WPFCalendar.Model
             set
             {
                 _dateColor = value;
+                OnPropertyChanged("DateColor");
             }
         }
+
+        public String MainFontColor
+        {
+            get
+            {
+                return _mainFontColor;
+            }
+            set
+            {
+                _mainFontColor = value;
+                OnPropertyChanged("MainFontColor");
+            }
+        }
+
 
         public ObservableCollection<EventModel> EventsList
         {
@@ -63,15 +80,18 @@ namespace WPFCalendar.Model
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DayModel(DateTime date, SolidColorBrush color, List<EventModel> allEventsList)
+        public DayModel(DateTime date, String dateColor, String eventColor, String mainFontColor, List<EventModel> allEventsList)
         {
             Date = date;
-            DateColor = color;
+            DateColor = dateColor;
+            _eventColor = eventColor;
+            MainFontColor = mainFontColor;
             EventsList = GetDayEvents(allEventsList);
         }
 
         public void addEvents(EventModel e)
         {
+            e.EventColor = _eventColor;
             _eventsList.Add(e);
             EventsList = new ObservableCollection<EventModel>(_eventsList.OrderBy(o => o.Start));
         }
@@ -92,6 +112,7 @@ namespace WPFCalendar.Model
                     // Date.Date - "pozbywamy się" godziny na wszelki wypadek
                     if (e.Date.Date.CompareTo(Date.Date) == 0)
                     {
+                        e.EventColor = _eventColor;
                         eventsList.Add(e);
                     }
                 }

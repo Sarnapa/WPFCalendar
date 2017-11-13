@@ -14,6 +14,7 @@ namespace WPFCalendar.Model
         private DateTime _start;
         private DateTime _end;
         private String _title;
+        private String _eventColor;
 
         public DateTime Date 
         { 
@@ -65,6 +66,19 @@ namespace WPFCalendar.Model
                 _title = value;
                 OnPropertyChanged("Title");
                 OnPropertyChanged("EventText");
+            }
+        }
+
+        public String EventColor
+        {
+            get
+            {
+                return _eventColor;
+            }
+            set
+            {
+                _eventColor = value;
+                OnPropertyChanged("EventColor");
             }
         }
 

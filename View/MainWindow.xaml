@@ -14,7 +14,7 @@
         <Style TargetType="Button" x:Key="prevNextWeekButton">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="#CCFFFF"/>
+            <Setter Property="Background" Value="{Binding CurrentColorScheme.ButtonBackgroundColor}"/>
             <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -28,11 +28,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#009999"/>
+                                <Setter Property="Background" Value="{Binding CurrentColorScheme.IsMouseOverButtonBackgroundColor}"/>
                                 <Setter Property="BorderBrush" Value="DarkGray"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#006666"/>
+                                <Setter Property="Background" Value="{Binding CurrentColorScheme.IsPressedButtonBackgroundColor}"/>
                                 <Setter Property="BorderBrush" Value="Black"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -40,7 +40,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#000066"/>
+            <Setter Property="Foreground" Value="{Binding CurrentColorScheme.MainFontColor}"/>
         </Style>
         
         <Style TargetType="Label" x:Key="weekDayLabelStyle">
@@ -51,7 +51,7 @@
                     <ControlTemplate TargetType="{x:Type Label}">
                         <Border BorderBrush="LightGray" 
                                 BorderThickness="1" 
-                                Background="#AAAAFF"
+                                Background="{Binding CurrentColorScheme.WeekDayLabelBackgroundColor}"
                                 Margin="0,0,2,0" 
                                 CornerRadius="3">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -60,7 +60,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#000066"/>
+            <Setter Property="Foreground" Value="{Binding CurrentColorScheme.MainFontColor}"/>
         </Style>
 
         <Style TargetType="Label" x:Key="weekLabelStyle">
@@ -71,7 +71,7 @@
                     <ControlTemplate TargetType="{x:Type Label}">
                         <Border BorderBrush="LightGray" 
                                 BorderThickness="1" 
-                                Background="#AAAAFF"
+                                Background="{Binding CurrentColorScheme.WeekLabelBackgroundColor}"
                                 Margin="0,0,0,2" 
                                 CornerRadius="3">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -80,7 +80,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#000066"/>
+            <Setter Property="Foreground" Value="{Binding CurrentColorScheme.MainFontColor}"/>
         </Style>
 
         <Style TargetType="Border" x:Key="dateBorderStyle">
@@ -109,30 +109,37 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#000066"/>
+            <Setter Property="Foreground" Value="{Binding MainFontColor}"/>
             <Setter Property="Margin" Value="0,0,0,1"/>
         </Style>
-
+        
         <Style TargetType="ScrollViewer" x:Key="eventsScrollViewerStyle">
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
         </Style>
         
         <Style TargetType="Border" x:Key="eventBorderStyle">
-            <Setter Property="BorderBrush" Value="#007777"/>
+            <Setter Property="BorderBrush" Value="{Binding EventColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="3,3,0,0"/>
             <Setter Property="Padding" Value="5,0,0,0"/>
+            <Setter Property="Margin" Value="0,0,0,1"/>
         </Style>
         
         <Style TargetType="TextBlock" x:Key="eventTextBlockStyle">
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#009999"/>
-            <Setter Property="Margin" Value="0,0,0,1"/>
+            <Setter Property="Foreground" Value="{Binding EventColor}"/>
         </Style>
 
+        <Style TargetType="Grid">
+            <Setter Property="TextElement.FontFamily" Value="{Binding CurrentFont}"/>
+        </Style>
     </Window.Resources>
     
+    <Window.InputBindings>
+        <MouseBinding MouseAction="RightClick" Command="{Binding PopupCommand}" />
+    </Window.InputBindings>
+
     <Grid Name="calendarGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -236,6 +243,26 @@
                 </DataTemplate> 
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <Popup Placement="Mouse" x:Name="popup" IsOpen="{Binding IsPopup}">
+            <Popup.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="GhostWhite" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </Popup.Resources>
+            <Border>
+                <StackPanel>
+                    <Label Content="Color Schemes:" />
+                    <ComboBox ItemsSource="{Binding ColorSchemesList}" SelectedValue="{Binding CurrentColorScheme}"
+                              DisplayMemberPath="SchemeName" SelectedIndex="0" />
+                    <Label Content="Fonts:" />
+                    <ComboBox ItemsSource="{Binding FontsList}" SelectedValue="{Binding CurrentFont}" SelectedIndex="0" />
+                </StackPanel>
+            </Border>
+        </Popup>
 
     </Grid>
 </Window>
