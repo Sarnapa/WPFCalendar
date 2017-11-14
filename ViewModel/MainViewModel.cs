@@ -226,7 +226,7 @@ namespace WPFCalendar.ViewModel
 
         public void AddEvent(DayModel day, EventModel e)
         {
-            day.addEvents(e);
+            day.AddEvent(e);
             _allEventsList.Add(e);
             WriteToSource();
         }
@@ -239,7 +239,7 @@ namespace WPFCalendar.ViewModel
 
         public void RemoveEvent(DayModel day, EventModel e)
         {
-            day.removeEvents(e);
+            day.RemoveEvent(e);
             _allEventsList.Remove(e);
             WriteToSource();
         }

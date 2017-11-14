@@ -89,14 +89,14 @@ namespace WPFCalendar.Model
             EventsList = GetDayEvents(allEventsList);
         }
 
-        public void addEvents(EventModel e)
+        public void AddEvent(EventModel e)
         {
             e.EventColor = _eventColor;
             _eventsList.Add(e);
             EventsList = new ObservableCollection<EventModel>(_eventsList.OrderBy(o => o.Start));
         }
 
-        public void removeEvents(EventModel e)
+        public void RemoveEvent(EventModel e)
         {
             _eventsList.Remove(e);
         }
