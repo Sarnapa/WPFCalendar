@@ -17,17 +17,29 @@ namespace WPFCalendarTest
     [TestFixture]
     public class Tests
     {
-        /*[Test]
-        public void AddingEventToDayModelTest()
+        [Test]
+        public void AddNewEventMethodInEventVMTest()
         {
-            var dayModelMock = MockRepository.GenerateMock<IDayModel>();
             var eventVM = new EventViewModel();
             eventVM.EventTitle = "event";
             eventVM.EventStart = "11:00";
             eventVM.EventEnd = "12:00";
-            eventVM.AddNewEvent()
-            dayModelMock.AssertWasCalled(e => e.AddEvent(eventVM.Event));
-        }*/
+            eventVM.AddNewEvent(DateTime.Now.Date);
+            Assert.AreEqual(eventVM.EventStart + "-" + eventVM.EventEnd + " " + eventVM.EventTitle,
+                eventVM.Event.EventText);
+        }
+
+        [Test]
+        public void ModifyEventMethodInEventVMTest()
+        {
+            var eventVM = new EventViewModel();
+            DateTime now = DateTime.Now;
+            String newTitle = "new event";
+            eventVM.Event = new EventModel(now.Date, now, now.AddMinutes(30), "event");
+            eventVM.EventTitle = newTitle;
+            eventVM.ModifyEvent();
+            Assert.AreEqual(newTitle, eventVM.Event.Title);
+        }
 
         [Test]
         public void GoingNextWeekTest()
@@ -58,11 +70,5 @@ namespace WPFCalendarTest
             Assert.AreEqual(false, mainVm.IsPopup);
         }
 
-        /*[Test]
-        public void NewEventWindowTest()
-        {
-            var mainVm = new MainViewModel();
-            mainVm.
-        }*/
     }
 }
