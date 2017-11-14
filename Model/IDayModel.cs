@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace WPFCalendar.Model
 {
-    public class IDayModel
+    public interface IDayModel
     {
-        public void AddEvent(EventModel e);
-        public void RemoveEvent(EventModel e);
-        private ObservableCollection<EventModel> GetDayEvents(List<EventModel> allEventsList);
+        void AddEvent(EventModel e);
+        void RemoveEvent(EventModel e);
     }
 }
