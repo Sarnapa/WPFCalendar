@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace WPFCalendar.Model
 {
-    public class DayModel: INotifyPropertyChanged
+    public class DayModel: INotifyPropertyChanged, IDayModel
     {
         private DateTime _date;
         private String _dateColor;

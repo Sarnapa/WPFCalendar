@@ -234,7 +234,7 @@ namespace WPFCalendar.ViewModel
         public void ModifyEvent(DayModel day)
         {
             day.EventsList = new ObservableCollection<EventModel>(day.EventsList.OrderBy(o => o.Start));
-            WriteToSource();
+            WriteToSource();                                    
         }
 
         public void RemoveEvent(DayModel day, EventModel e)
